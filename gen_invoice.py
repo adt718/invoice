@@ -1,14 +1,76 @@
 from datetime import datetime
-
+import xlwings as xw
 import openpyxl
+import openpyxl as excel
+import glob
 
+wb = xw.Book()
+path = r'C:/Users/ists/PycharmProjects/invoice/list.xlsx'
+wb.save(path)
+
+wb = xw.Book()
+path = r'C:/Users/ists/PycharmProjects/invoice/invoice.xlsx'
+wb.save(path)
+
+wb = xw.Book()
+path = r'C:/Users/ists/PycharmProjects/invoice/delivery_slip.xlsx'
+wb.save(path)
+
+wb = xw.Book()
+path = r'C:/Users/ists/PycharmProjects/invoice/out-delivery_slip.xlsx'
+wb.save(path)
+
+wb = xw.Book()
+path = r'C:/Users/ists/PycharmProjects/invoice/list.xlsx'
+# wb.save(path)
+
+# 上書き保存
+path = r'C:/Users/ists/PycharmProjects/invoice/list.xlsx'
+wb = xw.Book(path)
+wb.save()
+
+path = r'C:\Users\ists\PycharmProjects\invoice\delivery_slip.xlsx'
+wb = xw.Book(path)
+wb.save()
+
+path = r'C:\Users\ists\PycharmProjects\invoice\out-delivery_slip.xlsx'
+wb = xw.Book(path)
+wb.save()
+
+path = r'C:\Users\ists\PycharmProjects\invoice\out-invoice.xlsx'
+wb = xw.Book(path)
+wb.save()
+
+# ブックを閉じる
+wb = xw.Book()
+wb.save()  # ブックの保存
+wb.close()  # ブックを閉じる
 # ワークブックの読み込み
-wb = openpyxl.load_workbook("list.xlsx")
+wb = openpyxl.load_workbook(r'C:/Users/ists/PycharmProjects/invoice/out-invoice.xlsx')
+# wb = openpyxl.Workbook()
+# wb = excel.Workbook()
 
-# ワークブックの保存
-wb.save("list.xlsx")
+# 新規作成
+# sheet = wb.active
+# sheet.title = 'sheet1'
+# wb.save('list.xlsx')
+# glob.glob("*.xlsx")
+#
+# sheet = wb.active
+# sheet.title = 'sheet1'
+# wb.save('invoice.xlsx')
+# glob.glob("*.xlsx")
+
+# sheet = wb.active
+# sheet.title = 'sheet1'
+# wb.save('delivery_slip.xlsx')
+# glob.glob("*.xlsx")
+
+
 
 # ファイル名の指定など --- (*1)
+f = open('list.xlsx', 'r')
+f = open('invoice.xlsx', 'r')
 file_list = "list.xlsx"  # 納品物一覧
 file_invoice = "invoice.xlsx"  # 請求書のテンプレート
 file_delivery = "delivery_slip.xlsx"  # 納品書のテンプレート
@@ -17,7 +79,7 @@ file_out_ds = "out-delivery_slip.xlsx"  # 生成する納品書
 
 # 納品物一覧を読み込む --- (*2)
 wb = openpyxl.load_workbook(file_list, data_only=True)  # 数式でなく値を取り出す場合
-ws = wb["sheet1"]  # sheet1を選ぶ
+ws = wb["Sheet1"]  # sheet1を選ぶ
 name = ws["A1"].value  # 宛名を得る
 list_data = ws["A3:F10"]  # 任意の範囲を取得
 
@@ -43,6 +105,6 @@ for y, row in enumerate(list_data):
         ws_ds.cell(row=12 + y + 1, column=0 + x + 1, value=v)
 
 # 新しく保存する --- (*6)
-wb_iv.save(file_out_iv)
-wb_ds.save(file_out_ds)
+# wb_iv.save(file_out_iv)
+# wb_ds.save(file_out_ds)
 print("ok")
