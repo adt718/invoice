@@ -2,28 +2,41 @@ from datetime import datetime
 import xlwings as xw
 import openpyxl
 import openpyxl as excel
-import glob
-
+import pandas as pd
+import xlsxwriter
+from openpyxl import load_workbook
 wb = xw.Book()
 path = r'C:/Users/ists/PycharmProjects/invoice/list.xlsx'
-wb.save(path)
-
-wb = xw.Book()
-path = r'C:/Users/ists/PycharmProjects/invoice/invoice.xlsx'
-wb.save(path)
-
-wb = xw.Book()
 path = r'C:/Users/ists/PycharmProjects/invoice/delivery_slip.xlsx'
-wb.save(path)
-
-wb = xw.Book()
+path = r'C:/Users/ists/PycharmProjects/invoice/invoice.xlsx'
 path = r'C:/Users/ists/PycharmProjects/invoice/out-delivery_slip.xlsx'
+path = r'C:/Users/ists/PycharmProjects/invoice/out-invoice.xlsx'
 wb.save(path)
 
-wb = xw.Book()
-path = r'C:/Users/ists/PycharmProjects/invoice/list.xlsx'
+# wb = xw.Book()
+# path = r'C:/Users/ists/PycharmProjects/invoice/invoice.xlsx'
+# wb.save(path)
+#
+# wb = xw.Book()
+# path = r'C:/Users/ists/PycharmProjects/invoice/delivery_slip.xlsx'
+# wb.save(path)
+#
+# wb = xw.Book()
+# path = r'C:/Users/ists/PycharmProjects/invoice/out-delivery_slip.xlsx'
+# wb.save(path)
+#
+# wb = xw.Book()
+# path = r'C:/Users/ists/PycharmProjects/invoice/list.xlsx'
 # wb.save(path)
 
+# 読み込み
+wb = pd.read_excel(r'C:\Users\ists\PycharmProjects\invoice\list.xlsx')
+wb = pd.read_excel(r'C:/Users/ists/OneDrive/デスクトップ/program/invoice.xlsx')
+wb = pd.read_excel(r'C:/Users/ists/OneDrive/デスクトップ/program/delivery_slip.xlsx')
+wb = pd.read_excel(r'C:/Users/ists/OneDrive/デスクトップ/program/out-delivery_slip.xlsx')
+wb = pd.read_excel(r'C:/Users/ists/OneDrive/デスクトップ/program/out-invoice.xlsx')
+
+print(wb)
 # 上書き保存
 path = r'C:/Users/ists/PycharmProjects/invoice/list.xlsx'
 wb = xw.Book(path)
@@ -46,10 +59,10 @@ wb = xw.Book()
 wb.save()  # ブックの保存
 wb.close()  # ブックを閉じる
 # ワークブックの読み込み
-wb = openpyxl.load_workbook(r'C:/Users/ists/PycharmProjects/invoice/out-invoice.xlsx')
+wb = openpyxl.load_workbook('list.xlsx')
 # wb = openpyxl.Workbook()
 # wb = excel.Workbook()
-
+print(wb)
 # 新規作成
 # sheet = wb.active
 # sheet.title = 'sheet1'
@@ -67,10 +80,10 @@ wb = openpyxl.load_workbook(r'C:/Users/ists/PycharmProjects/invoice/out-invoice.
 # glob.glob("*.xlsx")
 
 
-
 # ファイル名の指定など --- (*1)
-f = open('list.xlsx', 'r')
-f = open('invoice.xlsx', 'r')
+# f = open('list.xlsx', 'r')
+# f = open('invoice.xlsx', 'r')
+paths = ['./list']
 file_list = "list.xlsx"  # 納品物一覧
 file_invoice = "invoice.xlsx"  # 請求書のテンプレート
 file_delivery = "delivery_slip.xlsx"  # 納品書のテンプレート
@@ -83,6 +96,17 @@ ws = wb["Sheet1"]  # sheet1を選ぶ
 name = ws["A1"].value  # 宛名を得る
 list_data = ws["A3:F10"]  # 任意の範囲を取得
 
+
+# 出力するファイル名を'sheet.xlsx'としてwriterを定義
+writer = pd.ExcelWriter(r'C:/Users/ists/PycharmProjects/invoice/list.xlsx', engine = 'xlsxwriter')
+#
+# 全レコードを'全体'シートに出力
+wb.to_excel(writer, sheet_name = 'Sheet1', index=False)
+
+# Excelファイルを保存
+writer.save()
+# Excelファイルを閉じる
+writer.close()
 # 請求書と領収書のテンプレートを読む --- (*3)
 wb_iv = openpyxl.load_workbook(file_invoice)
 ws_iv = wb_iv.active
